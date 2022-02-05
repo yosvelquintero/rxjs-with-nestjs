@@ -1,0 +1,30 @@
+### Amadeus
+@hostname = localhost
+@port = 3000
+
+@host = http://{{hostname}}:{{port}}
+@contentType = application/json
+
+# ------------------------------------------------------------
+# Products
+# ------------------------------------------------------------
+
+###
+### GET Producs / Sales
+
+GET  {{host}}/long-request
+Content-Type: {{contentType}}
+
+###
+### GET Producs / Sales
+
+GET  {{host}}/products/sales
+Content-Type: {{contentType}}
+
+###
+### GET Github / Users
+
+GET  {{host}}/github/users?users=yosvelquintero,123
+Content-Type: {{contentType}}
+
+###
