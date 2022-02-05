@@ -1,15 +1,17 @@
-import { pipe } from 'rxjs';
+import { Observable, pipe, UnaryFunction } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-export default function sortBy(order: string, key: string): any {
+import { ISale } from 'src/types';
+
+export default function sortBy(
+  order: string,
+  key: string,
+): UnaryFunction<Observable<ISale[]>, Observable<ISale>> {
   return pipe(
-    switchMap((arr: unknown[]) =>
-      arr.sort((a, b) => {
-        if (order === 'DESC') {
-          return b[key] - a[key];
-        }
-        return a[key] - b[key];
-      }),
+    switchMap((arr: ISale[]) =>
+      arr.sort((a, b): number =>
+        order === 'DESC' ? b[key] - a[key] : a[key] - b[key],
+      ),
     ),
   );
 }

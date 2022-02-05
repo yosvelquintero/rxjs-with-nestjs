@@ -1,4 +1,5 @@
 import { Module, HttpModule } from '@nestjs/common';
+
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { GithubClient } from './github.client';

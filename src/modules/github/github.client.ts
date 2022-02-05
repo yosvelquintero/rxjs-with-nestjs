@@ -1,7 +1,8 @@
 import { Injectable, HttpService, HttpException } from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 import { AxiosResponse, AxiosError } from 'axios';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { GithubUser } from './github.interface';
 
 @Injectable()
@@ -14,17 +15,18 @@ export class GithubClient {
     return this.httpService
       .get<GithubUser>(`${this.GITHUB_API}/users/${username}`)
       .pipe(
-        map((response) => response),
-        catchError((error: AxiosError) => {
-          const { response } = error;
+        catchError(
+          (error: AxiosError): Observable<never> => {
+            const {
+              response: {
+                data: { message },
+                status,
+              },
+            } = error;
 
-          return throwError(
-            new HttpException(
-              { message: response.data.message, username },
-              response.status,
-            ),
-          );
-        }),
+            return throwError(new HttpException({ message, username }, status));
+          },
+        ),
       );
   }
 }

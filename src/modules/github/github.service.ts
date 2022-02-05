@@ -16,11 +16,14 @@ export class GithubService {
   }
 
   getUsers(users: string): Observable<GithubUser[]> {
-    const observables = users.split(',').map((user) => {
-      return this.githubClient
-        .getUser(user.trim())
-        .pipe(map((res) => res.data));
-    });
+    const observables: Observable<GithubUser>[] = users
+      .split(',')
+      .filter((user) => !!user)
+      .map((user) => {
+        return this.githubClient
+          .getUser(user.trim())
+          .pipe(map((res) => res.data));
+      });
 
     return forkJoin(observables);
   }

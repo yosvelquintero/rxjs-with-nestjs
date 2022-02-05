@@ -1,13 +1,15 @@
-import { Controller, Get, Query, Param } from '@nestjs/common';
-import { ProductsService } from './products.service';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { ISale } from 'src/types';
+
+import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get('sales/:product')
-  getSalesByProduct(@Param('product') product: string): Observable<any[]> {
+  getSalesByProduct(@Param('product') product: string): Observable<ISale[]> {
     return this.productsService.getSalesByProduct(product);
   }
 
@@ -15,7 +17,7 @@ export class ProductsController {
   getSales(
     @Query('order') order = 'ASC',
     @Query('limit') limit = 3,
-  ): Observable<any[]> {
+  ): Observable<unknown[]> {
     return this.productsService.getSales(order, limit);
   }
 }
